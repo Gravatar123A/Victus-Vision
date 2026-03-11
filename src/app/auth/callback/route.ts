@@ -39,19 +39,12 @@ export async function GET(request: Request) {
         console.error("Error creating user profile:", err);
       }
 
-      const forwardedHost = request.headers.get("x-forwarded-host");
-      const isLocalEnv = process.env.NODE_ENV === "development";
-
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`);
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}`);
-      }
+      // Use the request origin for redirects to stay on the same domain
+      const redirectUrl = new URL(next, request.url);
+      return NextResponse.redirect(redirectUrl.toString());
     }
   }
 
   // Error - redirect to login with error
-  return NextResponse.redirect(`${origin}/login?error=auth_failed`);
+  return NextResponse.redirect(new URL(`/login?error=auth_failed`, request.url).toString());
 }
