@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/lib/theme-provider";
+import { useAuth } from "@/lib/auth-context";
 import {
   Search, Menu, X, Sun, Moon, Bell, MessageSquare, User, ChevronDown, 
   ShoppingBag, Briefcase, LayoutDashboard, Shield, LogIn, UserPlus,
-  Heart, Settings, LogOut
+  Heart, Settings, LogOut, Loader2
 } from "lucide-react";
 
 const navLinks = [
@@ -18,12 +20,24 @@ const navLinks = [
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const { user, profile, loading, signOut } = useAuth();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
-  // Mock auth state
-  const [isLoggedIn] = useState(true);
+
+  const isLoggedIn = !!user;
+  const displayName = profile?.fullName || profile?.username || user?.email?.split("@")[0] || "User";
+  const displayInitial = displayName.charAt(0).toUpperCase();
+  const username = profile?.username || user?.id?.slice(0, 8) || "user";
+
+  const handleSignOut = async () => {
+    setProfileOpen(false);
+    await signOut();
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <>
@@ -96,7 +110,11 @@ export default function Navbar() {
                 )}
               </button>
 
-              {isLoggedIn ? (
+              {loading ? (
+                <div className="p-2">
+                  <Loader2 className="w-5 h-5 text-[var(--muted)] animate-spin" />
+                </div>
+              ) : isLoggedIn ? (
                 <>
                   {/* Messages */}
                   <Link
@@ -104,7 +122,6 @@ export default function Navbar() {
                     className="p-2 rounded-xl hover:bg-[var(--surface)] transition-colors relative"
                   >
                     <MessageSquare className="w-5 h-5 text-[var(--muted)]" />
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
                   </Link>
 
                   {/* Notifications */}
@@ -114,7 +131,6 @@ export default function Navbar() {
                       className="p-2 rounded-xl hover:bg-[var(--surface)] transition-colors relative"
                     >
                       <Bell className="w-5 h-5 text-[var(--muted)]" />
-                      <span className="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full" />
                     </button>
                     <AnimatePresence>
                       {notifOpen && (
@@ -129,25 +145,9 @@ export default function Navbar() {
                           <div className="p-4 border-b border-[var(--border-color)]">
                             <h3 className="font-semibold text-sm">Notifications</h3>
                           </div>
-                          <div className="max-h-80 overflow-y-auto">
-                            {[
-                              { text: "New order from John Smith", time: "2m ago", dot: true },
-                              { text: "Emily left a 5-star review", time: "1h ago", dot: true },
-                              { text: "Your product was purchased", time: "3h ago", dot: false },
-                            ].map((n, i) => (
-                              <div key={i} className="px-4 py-3 hover:bg-[var(--surface)] transition-colors cursor-pointer flex gap-3 items-start">
-                                {n.dot && <span className="w-2 h-2 mt-1.5 rounded-full bg-primary shrink-0" />}
-                                {!n.dot && <span className="w-2 h-2 mt-1.5 rounded-full bg-transparent shrink-0" />}
-                                <div>
-                                  <p className="text-sm">{n.text}</p>
-                                  <p className="text-xs text-[var(--muted)] mt-0.5">{n.time}</p>
-                                </div>
-                              </div>
-                            ))}
+                          <div className="p-6 text-center text-sm text-[var(--muted)]">
+                            No new notifications
                           </div>
-                          <Link href="/notifications" className="block p-3 text-center text-xs text-primary font-medium border-t border-[var(--border-color)] hover:bg-[var(--surface)] transition-colors">
-                            View all notifications
-                          </Link>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -159,9 +159,13 @@ export default function Navbar() {
                       onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
                       className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-[var(--surface)] transition-colors"
                     >
-                      <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-bold">
-                        A
-                      </div>
+                      {profile?.avatarUrl ? (
+                        <img src={profile.avatarUrl} alt="" className="w-7 h-7 rounded-lg object-cover" />
+                      ) : (
+                        <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-bold">
+                          {displayInitial}
+                        </div>
+                      )}
                       <ChevronDown className="w-3.5 h-3.5 text-[var(--muted)] hidden sm:block" />
                     </button>
                     <AnimatePresence>
@@ -175,20 +179,20 @@ export default function Navbar() {
                           style={{ boxShadow: "var(--shadow-lg)" }}
                         >
                           <div className="p-4 border-b border-[var(--border-color)]">
-                            <p className="font-semibold text-sm">Alex Chen</p>
-                            <p className="text-xs text-[var(--muted)]">@alexchen</p>
+                            <p className="font-semibold text-sm truncate">{displayName}</p>
+                            <p className="text-xs text-[var(--muted)] truncate">@{username}</p>
                           </div>
                           <div className="p-2">
                             {[
                               { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-                              { label: "My Profile", icon: User, href: "/profile/alexchen" },
+                              { label: "My Profile", icon: User, href: `/profile/${username}` },
                               { label: "Favorites", icon: Heart, href: "/favorites" },
                               { label: "Settings", icon: Settings, href: "/dashboard/settings" },
-                              { label: "Admin Panel", icon: Shield, href: "/admin" },
                             ].map((item) => (
                               <Link
                                 key={item.href}
                                 href={item.href}
+                                onClick={() => setProfileOpen(false)}
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm hover:bg-[var(--surface)] transition-colors"
                               >
                                 <item.icon className="w-4 h-4 text-[var(--muted)]" />
@@ -197,7 +201,10 @@ export default function Navbar() {
                             ))}
                           </div>
                           <div className="p-2 border-t border-[var(--border-color)]">
-                            <button className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm hover:bg-[var(--surface)] transition-colors w-full text-danger">
+                            <button
+                              onClick={handleSignOut}
+                              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm hover:bg-[var(--surface)] transition-colors w-full text-danger"
+                            >
                               <LogOut className="w-4 h-4" />
                               Sign Out
                             </button>
@@ -293,16 +300,33 @@ export default function Navbar() {
                     {link.label}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-[var(--border-color)]">
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-[var(--surface)] transition-colors"
-                  >
-                    <LayoutDashboard className="w-5 h-5 text-[var(--muted)]" />
-                    Dashboard
-                  </Link>
-                </div>
+                {isLoggedIn ? (
+                  <div className="pt-4 border-t border-[var(--border-color)] space-y-2">
+                    <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-[var(--surface)] transition-colors">
+                      <LayoutDashboard className="w-5 h-5 text-[var(--muted)]" />
+                      Dashboard
+                    </Link>
+                    <Link href="/messages" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-[var(--surface)] transition-colors">
+                      <MessageSquare className="w-5 h-5 text-[var(--muted)]" />
+                      Messages
+                    </Link>
+                    <button onClick={handleSignOut} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-[var(--surface)] transition-colors w-full text-danger">
+                      <LogOut className="w-5 h-5" />
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <div className="pt-4 border-t border-[var(--border-color)] space-y-2">
+                    <Link href="/login" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-[var(--surface)] transition-colors">
+                      <LogIn className="w-5 h-5 text-[var(--muted)]" />
+                      Sign In
+                    </Link>
+                    <Link href="/signup" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium gradient-bg text-white rounded-xl text-center justify-center">
+                      <UserPlus className="w-5 h-5" />
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>

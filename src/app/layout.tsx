@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme-provider";
+import { AuthProvider } from "@/lib/auth-context";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -33,12 +34,14 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} antialiased`} style={{ fontFamily: "var(--font-sans)" }}>
         <ThemeProvider>
-          <div className="mesh-gradient" aria-hidden="true" />
-          <Navbar />
-          <main className="relative z-10 pt-16 min-h-screen">
-            {children}
-          </main>
-          <Footer />
+          <AuthProvider>
+            <div className="mesh-gradient" aria-hidden="true" />
+            <Navbar />
+            <main className="relative z-10 pt-16 min-h-screen">
+              {children}
+            </main>
+            <Footer />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
