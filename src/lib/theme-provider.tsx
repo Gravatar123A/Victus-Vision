@@ -43,9 +43,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   if (!mounted) {
     return (
-      <html lang="en" className="dark">
-        <body>{children}</body>
-      </html>
+      <ThemeContext.Provider value={{ theme: "dark", toggleTheme: () => {} }}>
+        <div style={{ visibility: "hidden" }}>{children}</div>
+      </ThemeContext.Provider>
     );
   }
 
