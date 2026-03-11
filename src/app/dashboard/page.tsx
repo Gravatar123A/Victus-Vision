@@ -11,8 +11,8 @@ import { dashboardStats, recentOrders, earningsData } from "@/lib/mock-data";
 
 const sidebarItems = [
   { label: "Overview", icon: LayoutDashboard, href: "/dashboard", active: true },
-  { label: "Services", icon: Briefcase, href: "/dashboard/services" },
-  { label: "Products", icon: Package, href: "/dashboard/products" },
+  { label: "Post a Gig", icon: Briefcase, href: "/dashboard/new-gig" },
+  { label: "List Product", icon: Package, href: "/dashboard/new-product" },
   { label: "Orders", icon: ShoppingCart, href: "/dashboard/orders" },
   { label: "Earnings", icon: DollarSign, href: "/dashboard/earnings" },
   { label: "Messages", icon: MessageSquare, href: "/messages" },
@@ -48,14 +48,19 @@ export default function DashboardPage() {
 
         {/* Main */}
         <div className="flex-1 min-w-0">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex items-center justify-between">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-display font-bold">Dashboard</h1>
               <p className="text-[var(--muted)] text-sm mt-1">Welcome back, Alex! Here&apos;s how your business is doing.</p>
             </div>
-            <Link href="/dashboard/services" className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium gradient-bg text-white hover:opacity-90 transition-opacity">
-              <Plus className="w-4 h-4" /> New Listing
-            </Link>
+            <div className="flex gap-3">
+              <Link href="/dashboard/new-product" className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-[var(--surface)] border border-[var(--border-color)] hover:border-primary/30 transition-colors">
+                <Plus className="w-4 h-4" /> New Product
+              </Link>
+              <Link href="/dashboard/new-gig" className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium gradient-bg text-white hover:opacity-90 transition-opacity">
+                <Plus className="w-4 h-4" /> Post a Gig
+              </Link>
+            </div>
           </motion.div>
 
           {/* Stats Grid */}

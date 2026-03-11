@@ -58,6 +58,10 @@ model Service {
   rating        Float     @default(0)
   reviewsCount  Int       @default(0)
   thumbnail     String?
+  tags          String[]  @default([])
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   
   // Relations
   categoryId    String
@@ -77,6 +81,10 @@ model Product {
   downloads     Int       @default(0)
   thumbnail     String?
   fileUrl       String?
+  tags          String[]  @default([])
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   
   // Relations
   categoryId    String
@@ -86,6 +94,7 @@ model Product {
   orders        Order[]
   reviews       Review[]
 }
+
 
 model Order {
   id            String    @id @default(uuid())

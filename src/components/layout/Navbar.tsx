@@ -15,7 +15,7 @@ import {
 const navLinks = [
   { label: "Services", href: "/services", icon: Briefcase },
   { label: "Products", href: "/products", icon: ShoppingBag },
-  { label: "Freelancers", href: "/freelancers", icon: User },
+  { label: "Freelance", href: "/freelance", icon: User },
 ];
 
 export default function Navbar() {
