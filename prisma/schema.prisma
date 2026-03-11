@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  username        String    @unique
+  fullName        String?
+  avatarUrl       String?
+  bio             String?
+  title           String?
+  location        String?
+  joinedAt        DateTime  @default(now())
+  level           String    @default("Beginner")
+  xp              Int       @default(0)
+  isVerified      Boolean   @default(false)
+  isSeller        Boolean   @default(false)
+  
+  // Relations
+  services        Service[] @relation("SellerServices")
+  products        Product[] @relation("SellerProducts")
+  boughtOrders    Order[]   @relation("BuyerOrders")
+  soldOrders      Order[]   @relation("SellerOrders")
+  reviewsGiven    Review[]  @relation("BuyerReviews")
+  reviewsReceived Review[]  @relation("SellerReviews")
+  sentMessages    Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  notifications   Notification[]
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  icon      String
+  services  Service[]
+  products  Product[]
+}
+
+model Service {
+  id            String    @id @default(uuid())
+  title         String
+  description   String
+  price         Float
+  deliveryDays  Int
+  rating        Float     @default(0)
+  reviewsCount  Int       @default(0)
+  thumbnail     String?
+  
+  // Relations
+  categoryId    String
+  category      Category  @relation(fields: [categoryId], references: [id])
+  sellerId      String
+  seller        User      @relation("SellerServices", fields: [sellerId], references: [id])
+  orders        Order[]
+  reviews       Review[]
+}
+
+model Product {
+  id            String    @id @default(uuid())
+  title         String
+  description   String
+  price         Float
+  rating        Float     @default(0)
+  downloads     Int       @default(0)
+  thumbnail     String?
+  fileUrl       String?
+  
+  // Relations
+  categoryId    String
+  category      Category  @relation(fields: [categoryId], references: [id])
+  sellerId      String
+  seller        User      @relation("SellerProducts", fields: [sellerId], references: [id])
+  orders        Order[]
+  reviews       Review[]
+}
+
+model Order {
+  id            String    @id @default(uuid())
+  status        String    @default("pending") // pending, in_progress, delivered, completed, cancelled
+  amount        Float
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  buyerId       String
+  buyer         User      @relation("BuyerOrders", fields: [buyerId], references: [id])
+  sellerId      String
+  seller        User      @relation("SellerOrders", fields: [sellerId], references: [id])
+  serviceId     String?
+  service       Service?  @relation(fields: [serviceId], references: [id])
+  productId     String?
+  product       Product?  @relation(fields: [productId], references: [id])
+  messages      Message[]
+}
+
+model Review {
+  id            String    @id @default(uuid())
+  rating        Int
+  comment       String
+  createdAt     DateTime  @default(now())
+  
+  // Relations
+  buyerId       String
+  buyer         User      @relation("BuyerReviews", fields: [buyerId], references: [id])
+  sellerId      String
+  seller        User      @relation("SellerReviews", fields: [sellerId], references: [id])
+  serviceId     String?
+  service       Service?  @relation(fields: [serviceId], references: [id])
+  productId     String?
+  product       Product?  @relation(fields: [productId], references: [id])
+}
+
+model Message {
+  id            String    @id @default(uuid())
+  content       String
+  createdAt     DateTime  @default(now())
+  isRead        Boolean   @default(false)
+  
+  // Relations
+  senderId      String
+  sender        User      @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId    String
+  receiver      User      @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id])
+}
+
+model Notification {
+  id            String    @id @default(uuid())
+  title         String
+  content       String
+  type          String    // order, message, review, system
+  isRead        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  
+  // Relations
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+}
