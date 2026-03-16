@@ -3,7 +3,7 @@ import { Zap } from "lucide-react";
 
 const footerLinks = {
   Platform: [
-    { label: "Browse Services", href: "/services" },
+    { label: "Browse Freelancers", href: "/freelance" },
     { label: "Digital Products", href: "/products" },
     { label: "Find Freelancers", href: "/freelancers" },
     { label: "Become a Seller", href: "/become-seller" },

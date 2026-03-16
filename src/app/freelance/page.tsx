@@ -126,7 +126,7 @@ export default function FreelancePage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filtered.map((gig, i) => (
             <motion.div key={gig.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-              <Link href={`/services/${gig.id}`}>
+              <Link href={`/freelance/${gig.id}`}>
                 <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] overflow-hidden card-hover group">
                   {/* Thumbnail */}
                   <div className="h-36 relative overflow-hidden">

@@ -68,7 +68,7 @@ export default function ProductsPage() {
                   <h3 className="font-semibold text-sm leading-tight mb-1 line-clamp-2">{product.title}</h3>
                   <p className="text-xs text-[var(--muted)] mb-3">by {product.seller.name}</p>
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {product.tags.map(tag => <span key={tag} className="px-2 py-0.5 rounded-md bg-[var(--surface-alt)] text-[10px] font-medium">{tag}</span>)}
+                    {(product.tags as string[]).map(tag => <span key={tag} className="px-2 py-0.5 rounded-md bg-[var(--surface-alt)] text-[10px] font-medium">{tag}</span>)}
                   </div>
                   <div className="flex items-center gap-2 mb-3">
                     <div className="flex items-center gap-0.5">{[1,2,3,4,5].map(s => <Star key={s} className={`w-3 h-3 ${s <= Math.floor(product.rating) ? "text-warning fill-warning" : "text-[var(--border-color)]"}`} />)}</div>

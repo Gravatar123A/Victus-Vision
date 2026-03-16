@@ -135,7 +135,7 @@ export default function ProfilePage() {
             <h2 className="font-display font-semibold text-lg mb-4 flex items-center gap-2"><Briefcase className="w-5 h-5" />Services</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {profile.services.map(s => (
-                <Link key={s.id} href={`/services/${s.id}`} className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] card-hover block">
+                <Link key={s.id} href={`/freelance/${s.id}`} className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] card-hover block">
                   <div className="h-28 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 mb-3" />
                   <h3 className="font-semibold text-sm mb-1">{s.title}</h3>
                   <div className="flex items-center gap-2 text-xs text-[var(--muted)]">

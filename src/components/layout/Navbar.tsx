@@ -13,9 +13,8 @@ import {
 } from "lucide-react";
 
 const navLinks = [
-  { label: "Services", href: "/services", icon: Briefcase },
+  { label: "Freelance", href: "/freelance", icon: Briefcase },
   { label: "Products", href: "/products", icon: ShoppingBag },
-  { label: "Freelance", href: "/freelance", icon: User },
 ];
 
 export default function Navbar() {

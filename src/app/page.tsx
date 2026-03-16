@@ -159,7 +159,7 @@ function Hero() {
             className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link
-              href="/services"
+              href="/freelance"
               className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl text-sm font-semibold text-white gradient-bg hover:opacity-90 transition-all hover:scale-[1.02] active:scale-[0.98]"
               style={{ boxShadow: "var(--shadow-glow)" }}
             >
@@ -287,7 +287,7 @@ function CategoriesSection() {
                 transition={{ delay: i * 0.05 }}
               >
                 <Link
-                  href={`/services?category=${cat.id}`}
+                  href={`/freelance?category=${cat.id}`}
                   className="group block p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] hover:border-primary/30 transition-all card-hover"
                 >
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
@@ -404,7 +404,7 @@ function TrendingServicesSection() {
             <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight">Popular services</h2>
             <p className="mt-2 text-[var(--muted)]">Top-rated services from our best sellers.</p>
           </div>
-          <Link href="/services" className="hidden sm:flex items-center gap-1 text-sm text-primary font-medium hover:underline">
+          <Link href="/freelance" className="hidden sm:flex items-center gap-1 text-sm text-primary font-medium hover:underline">
             View all <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
@@ -419,7 +419,7 @@ function TrendingServicesSection() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
               >
-                <Link href={`/services/${service.id}`} className="block w-72">
+                <Link href={`/freelance/${service.id}`} className="block w-72">
                   <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] overflow-hidden card-hover">
                     {/* Image */}
                     <div className="h-40 gradient-bg opacity-80 relative overflow-hidden">
