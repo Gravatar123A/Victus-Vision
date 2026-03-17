@@ -44,15 +44,16 @@ export async function POST(request: Request) {
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await request.json();
-    const { title, description, price, categoryId, tags, fileUrl } = body;
+    const { title, description, price, categoryId, tags, fileUrl, thumbnail } = body;
 
-    if (!title || !description || !price || !categoryId) {
+    if (!title || !description || price === undefined || !categoryId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    console.log("Creating product for user:", user.id, "with data:", body);
+
     let category = await prisma.category.findUnique({ where: { name: categoryId } });
     if (!category) {
-      // Check if it might be an ID first, though client sends name
       const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(categoryId);
       if (isUUID) {
         category = await prisma.category.findUnique({ where: { id: categoryId } });
@@ -64,13 +65,27 @@ export async function POST(request: Request) {
       }
     }
 
+    // Ensure user exists in Prisma DB
+    let dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) {
+      const baseUsername = user.email?.split("@")[0] || "user";
+      await prisma.user.create({
+        data: {
+          id: user.id,
+          email: user.email || "",
+          username: `${baseUsername}_${user.id.slice(0, 5)}`,
+        }
+      });
+    }
+
     const product = await prisma.product.create({
       data: {
         title,
         description,
-        price: parseFloat(price),
+        price: parseFloat(price) || 0,
         tags: tags || [],
         fileUrl: fileUrl || null,
+        thumbnail: thumbnail || null,
         sellerId: user.id,
         categoryId: category.id,
       },
@@ -86,8 +101,8 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ product }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating product:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Internal server error" }, { status: 500 });
   }
 }

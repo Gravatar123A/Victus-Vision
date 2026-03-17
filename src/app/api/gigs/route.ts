@@ -44,11 +44,13 @@ export async function POST(request: Request) {
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await request.json();
-    const { title, description, price, deliveryDays, categoryId, tags } = body;
+    const { title, description, price, deliveryDays, categoryId, tags, image } = body;
 
-    if (!title || !description || !price || !deliveryDays || !categoryId) {
+    if (!title || !description || price === undefined || !categoryId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    console.log("Creating service for user:", user.id, "with data:", body);
 
     // Ensure category exists, create if not
     let category = await prisma.category.findUnique({ where: { name: categoryId } });
@@ -59,17 +61,32 @@ export async function POST(request: Request) {
       }
       if (!category) {
         category = await prisma.category.create({
-          data: { name: categoryId, icon: "Code2" },
+          data: { name: categoryId, icon: "Briefcase" },
         });
       }
     }
 
-    const gig = await prisma.service.create({
+    // Ensure user exists in Prisma DB
+    let dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) {
+      console.log("User not found in Prisma DB, creating stub for:", user.id);
+      const baseUsername = user.email?.split("@")[0] || "user";
+      await prisma.user.create({
+        data: {
+          id: user.id,
+          email: user.email || "",
+          username: `${baseUsername}_${user.id.slice(0, 5)}`,
+        }
+      });
+    }
+
+    const service = await prisma.service.create({
       data: {
         title,
         description,
-        price: parseFloat(price),
-        deliveryDays: parseInt(deliveryDays),
+        price: parseFloat(price) || 0,
+        deliveryDays: parseInt(deliveryDays) || 3,
+        thumbnail: image || null,
         tags: tags || [],
         sellerId: user.id,
         categoryId: category.id,
@@ -86,9 +103,9 @@ export async function POST(request: Request) {
       data: { isSeller: true },
     });
 
-    return NextResponse.json({ gig }, { status: 201 });
-  } catch (error) {
-    console.error("Error creating gig:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ service }, { status: 201 });
+  } catch (error: any) {
+    console.error("Error creating service:", error);
+    return NextResponse.json({ error: error.message || "Internal server error" }, { status: 500 });
   }
 }
