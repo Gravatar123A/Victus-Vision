@@ -1,17 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 
-// In some environments, Next.js doesn't load .env into process.env before Prisma initializes
-if (!process.env.DATABASE_URL) {
-  console.warn("DATABASE_URL not found in process.env. Prisma may fail to connect.");
-}
-
 const prismaClientSingleton = () => {
+  const dbUrl = process.env.DATABASE_URL;
+  
+  if (!dbUrl) {
+    console.error("DATABASE_URL is missing in process.env during Prisma initialization!");
+  }
+
   return new PrismaClient({
     datasources: {
       db: {
-        url: process.env.DATABASE_URL,
+        url: dbUrl,
       },
     },
+    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
 };
 
