@@ -50,9 +50,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    let category = await prisma.category.findUnique({ where: { id: categoryId } });
+    let category = await prisma.category.findUnique({ where: { name: categoryId } });
     if (!category) {
-      category = await prisma.category.findUnique({ where: { name: categoryId } });
+      // Check if it might be an ID first, though client sends name
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(categoryId);
+      if (isUUID) {
+        category = await prisma.category.findUnique({ where: { id: categoryId } });
+      }
       if (!category) {
         category = await prisma.category.create({
           data: { name: categoryId, icon: "Package" },

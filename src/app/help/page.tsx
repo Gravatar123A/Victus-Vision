@@ -27,7 +27,7 @@ const helpCategories = [
     title: "Selling",
     icon: Briefcase,
     articles: [
-      { q: "How do I create a gig?", a: "Go to your Dashboard and click 'Post a Gig'. Fill in the title, category, description, pricing, and tags. Review and publish your gig to make it visible on the marketplace." },
+      { q: "How do I create a service?", a: "Go to your Dashboard and click 'Post a Service'. Fill in the title, category, description, pricing, and tags. Review and publish your service to make it visible on the marketplace." },
       { q: "How do I list a digital product?", a: "From your Dashboard, click 'List Product'. Enter your product details, set the price, add a download URL, and publish. Your product will be available for purchase immediately." },
       { q: "When do I get paid?", a: "Earnings are available for withdrawal after a 14-day clearing period. You can withdraw via PayPal or bank transfer. Payouts are processed within 1-3 business days." },
     ],

@@ -74,11 +74,11 @@ export default function FreelancePage() {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-bold">Freelance Gigs</h1>
+          <h1 className="text-3xl font-display font-bold">Services</h1>
           <p className="text-[var(--muted)] mt-2">Browse services offered by verified freelancers</p>
         </div>
         <Link href="/dashboard/new-gig" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold gradient-bg text-white hover:opacity-90 transition-opacity shrink-0">
-          <Plus className="w-4 h-4" /> Post a Gig
+          <Plus className="w-4 h-4" /> Post a Service
         </Link>
       </motion.div>
 
@@ -89,7 +89,7 @@ export default function FreelancePage() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search gigs by title, description..."
+          placeholder="Search services by title, description..."
           className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-[var(--surface)] border border-[var(--border-color)] focus:outline-none focus:border-primary"
         />
       </div>
@@ -191,12 +191,12 @@ export default function FreelancePage() {
           <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
             <Briefcase className="w-8 h-8 text-primary/50" />
           </div>
-          <h3 className="font-display font-semibold text-lg mb-2">No gigs found</h3>
+          <h3 className="font-display font-semibold text-lg mb-2">No services found</h3>
           <p className="text-sm text-[var(--muted)] max-w-md mx-auto">
-            {search ? "Try adjusting your search or filters." : "Be the first to post a gig!"}
+            {search ? "Try adjusting your search or filters." : "Be the first to post a service!"}
           </p>
           <Link href="/dashboard/new-gig" className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-xl text-sm font-medium gradient-bg text-white hover:opacity-90 transition-opacity">
-            <Plus className="w-4 h-4" /> Post Your First Gig
+            <Plus className="w-4 h-4" /> Post Your First Service
           </Link>
         </motion.div>
       )}

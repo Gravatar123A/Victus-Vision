@@ -10,7 +10,7 @@ import {
 
 const sidebarItems = [
   { label: "Overview", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "Post a Gig", icon: Briefcase, href: "/dashboard/new-gig" },
+  { label: "Post a Service", icon: Briefcase, href: "/dashboard/new-gig" },
   { label: "List Product", icon: Package, href: "/dashboard/new-product" },
   { label: "Orders", icon: ShoppingCart, href: "/dashboard/orders" },
   { label: "Earnings", icon: DollarSign, href: "/dashboard/earnings" },

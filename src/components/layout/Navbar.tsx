@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 const navLinks = [
-  { label: "Freelance", href: "/freelance", icon: Briefcase },
+  { label: "Services", href: "/freelance", icon: Briefcase },
   { label: "Products", href: "/products", icon: ShoppingBag },
 ];
 

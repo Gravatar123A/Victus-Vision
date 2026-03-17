@@ -11,7 +11,7 @@ import { dashboardStats, recentOrders, earningsData } from "@/lib/mock-data";
 
 const sidebarItems = [
   { label: "Overview", icon: LayoutDashboard, href: "/dashboard", active: true },
-  { label: "Post a Gig", icon: Briefcase, href: "/dashboard/new-gig" },
+  { label: "Post a Service", icon: Briefcase, href: "/dashboard/new-gig" },
   { label: "List Product", icon: Package, href: "/dashboard/new-product" },
   { label: "Orders", icon: ShoppingCart, href: "/dashboard/orders" },
   { label: "Earnings", icon: DollarSign, href: "/dashboard/earnings" },
@@ -58,7 +58,7 @@ export default function DashboardPage() {
                 <Plus className="w-4 h-4" /> New Product
               </Link>
               <Link href="/dashboard/new-gig" className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium gradient-bg text-white hover:opacity-90 transition-opacity">
-                <Plus className="w-4 h-4" /> Post a Gig
+                <Plus className="w-4 h-4" /> Post a Service
               </Link>
             </div>
           </motion.div>

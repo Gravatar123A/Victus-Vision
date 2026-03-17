@@ -73,11 +73,11 @@ export default function NewGigPage() {
           <div className="w-16 h-16 rounded-2xl bg-success/10 flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-8 h-8 text-success" />
           </div>
-          <h1 className="text-2xl font-display font-bold mb-2">Gig Published! 🎉</h1>
-          <p className="text-sm text-[var(--muted)]">Your gig &quot;{title}&quot; is now live on the marketplace.</p>
+          <h1 className="text-2xl font-display font-bold mb-2">Service Published! 🎉</h1>
+          <p className="text-sm text-[var(--muted)]">Your service &quot;{title}&quot; is now live on the marketplace.</p>
           <div className="flex gap-3 justify-center mt-6">
             <Link href="/freelance" className="px-5 py-2.5 rounded-xl text-sm font-medium bg-[var(--surface)] border border-[var(--border-color)] hover:border-primary/30 transition-colors">
-              View Gigs
+              View Services
             </Link>
             <button onClick={() => { setSuccess(false); setStep(1); setTitle(""); setDescription(""); setCategory(""); setPrice(""); setDeliveryDays(""); setTags([]); }} className="px-5 py-2.5 rounded-xl text-sm font-medium gradient-bg text-white hover:opacity-90 transition-opacity">
               Post Another
@@ -98,7 +98,7 @@ export default function NewGigPage() {
           </Link>
           <h1 className="text-2xl font-display font-bold flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center"><Briefcase className="w-5 h-5 text-white" /></div>
-            Post a New Gig
+            Post a New Service
           </h1>
           <p className="text-sm text-[var(--muted)] mt-2">Offer your freelance skills to buyers worldwide</p>
         </div>
@@ -122,7 +122,7 @@ export default function NewGigPage() {
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-5">
               <h2 className="font-display font-semibold text-lg">Basic Information</h2>
               <div>
-                <label className="text-xs font-medium text-[var(--muted)] mb-1.5 block">Gig Title *</label>
+                <label className="text-xs font-medium text-[var(--muted)] mb-1.5 block">Service Title *</label>
                 <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="I will build a professional website in React" className="w-full px-4 py-2.5 rounded-xl text-sm bg-[var(--surface)] border border-[var(--border-color)] focus:outline-none focus:border-primary transition-colors" maxLength={120} />
                 <p className="text-[10px] text-[var(--muted)] mt-1">{title.length}/120 characters</p>
               </div>
@@ -237,7 +237,7 @@ export default function NewGigPage() {
               <div className="flex gap-3">
                 <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl text-sm font-medium bg-[var(--surface)] border border-[var(--border-color)] hover:border-primary/30 transition-colors">Back</button>
                 <button onClick={handleSubmit} disabled={loading} className="flex-1 py-3 rounded-xl text-sm font-semibold gradient-bg text-white hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50">
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 className="w-4 h-4" /> Publish Gig</>}
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 className="w-4 h-4" /> Publish Service</>}
                 </button>
               </div>
             </motion.div>

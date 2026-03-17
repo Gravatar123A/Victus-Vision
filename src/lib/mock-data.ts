@@ -256,45 +256,6 @@ export const notifications = [
   { id: "n5", type: "update", message: "Platform update: New features available", time: "1 day ago", read: true },
 ];
 
-export const conversations = [
-  {
-    id: "c1",
-    user: { name: "John Smith", avatar: "/avatars/11.jpg", online: true },
-    lastMessage: "Sounds great! Ill send over the requirements doc.",
-    time: "2 min ago",
-    unread: 2,
-  },
-  {
-    id: "c2",
-    user: { name: "Emily Brown", avatar: "/avatars/12.jpg", online: true },
-    lastMessage: "Can we add a few more revisions to the logo?",
-    time: "15 min ago",
-    unread: 1,
-  },
-  {
-    id: "c3",
-    user: { name: "Tom Harris", avatar: "/avatars/13.jpg", online: false },
-    lastMessage: "Thanks for the amazing work! Left you a review.",
-    time: "1 hour ago",
-    unread: 0,
-  },
-  {
-    id: "c4",
-    user: { name: "Anna White", avatar: "/avatars/14.jpg", online: false },
-    lastMessage: "When can we schedule the next milestone?",
-    time: "3 hours ago",
-    unread: 0,
-  },
-];
-
-export const chatMessages = [
-  { id: "m1", senderId: "other", text: "Hi! I'm interested in your website development service.", time: "10:00 AM" },
-  { id: "m2", senderId: "me", text: "Hello! Thanks for reaching out. I'd love to hear about your project.", time: "10:02 AM" },
-  { id: "m3", senderId: "other", text: "I need a modern e-commerce website built with Next.js and Supabase. It should have user auth, product listings, and a checkout flow.", time: "10:05 AM" },
-  { id: "m4", senderId: "me", text: "That sounds like a great project! I've built several e-commerce platforms with that exact stack. Let me send you some examples.", time: "10:07 AM" },
-  { id: "m5", senderId: "other", text: "Sounds great! I'll send over the requirements doc.", time: "10:10 AM" },
-];
-
 export const adminStats = {
   totalUsers: 45200,
   newUsersToday: 128,
